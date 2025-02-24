@@ -8,7 +8,7 @@ import React, {
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const AuthContext = createContext<{
-  signIn: () => void;
+  signIn: (firstName: string, lastName: string) => void;
   signOut: () => void;
   session?: string | null;
   isLoading: boolean;
@@ -37,9 +37,8 @@ export function SessionProvider({ children }: PropsWithChildren) {
   return (
     <AuthContext.Provider
       value={{
-        signIn: () => {
-          // Perform sign-in logic here
-          setSession("xxx");
+        signIn: (firstName: string, lastName: string) => {
+          setSession(`${firstName}-${lastName}`);
         },
         signOut: () => {
           setSession(null);
