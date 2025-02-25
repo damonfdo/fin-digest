@@ -7,11 +7,9 @@ import {
   VirtualizedList,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, Image, Input } from "@rneui/themed";
 import { News } from "../types/news";
 import { fetchNewsAPI } from "../services/newsApi";
-import { Link } from "expo-router";
 import { ExternalLink } from "./ExternalLink";
 
 const NewsFlatList = () => {
@@ -35,27 +33,34 @@ const NewsFlatList = () => {
   const renderItem = ({ item }: { item: News }) => {
     const formattedDateTime = new Date(item.datetime);
     return (
-      <View key={item.id} style={{ flexDirection: "row", gap: 4, padding: 16 }}>
+      <View
+        key={item.id}
+        style={{
+          flexDirection: "row",
+          gap: 4,
+          paddingHorizontal: 16,
+          overflow: "hidden",
+        }}
+      >
         <Image
           source={{ uri: item.image }}
-          //   style={{ width: 100, height: 100 }}
-          //   resizeMode="contain"
-          height={100}
-          width={100}
-          containerStyle={styles.item}
-          //   PlaceholderContent={<ActivityIndicator />}
+          style={styles.image}
+          resizeMode="stretch"
+          PlaceholderContent={<ActivityIndicator />}
         />
 
         <ExternalLink href={item.url}>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
-            <Text style={[styles.label]}>{item.source}</Text>
-            <Text style={[styles.label]}>
-              {formattedDateTime.toISOString()}
-            </Text>
+          <View style={{ flexDirection: "column", gap: 8 }}>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <Text style={[styles.subText]}>{item.source}</Text>
+              <Text style={[styles.subText]}>
+                {formattedDateTime.toDateString()}
+              </Text>
+            </View>
+            <Text style={[styles.label]}>{item.headline}</Text>
           </View>
-          <Text style={[styles.label]}>{item.headline}</Text>
         </ExternalLink>
       </View>
     );
@@ -65,7 +70,7 @@ const NewsFlatList = () => {
       data={news}
       keyExtractor={(item, index) => index.toString()}
       renderItem={renderItem}
-      contentContainerStyle={{ padding: 10, gap: 16 }}
+      contentContainerStyle={{ gap: 16 }}
       ListEmptyComponent={
         <Button
           onPress={() => {
@@ -89,12 +94,29 @@ export default NewsFlatList;
 
 const styles = StyleSheet.create({
   label: {
-    fontSize: 14,
-    color: "#fff",
+    fontFamily: "Roboto",
+    fontWeight: 500,
+    fontSize: 20,
+    lineHeight: 24,
+    letterSpacing: 0,
+    color: "#ffffff",
+  },
+  subText: {
+    fontFamily: "Rubik",
+    fontWeight: 400,
+    fontSize: 12,
+    lineHeight: 16,
+    letterSpacing: 0,
+    color: "#FFFFFFB2",
   },
   item: {
     aspectRatio: 1,
     width: "100%",
     flex: 1,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    aspectRatio: 1,
   },
 });
