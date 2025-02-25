@@ -11,7 +11,7 @@ export default function Home() {
     <View style={[styles.container]}>
       <Text style={[styles.title]}>Hey {firstName}</Text>
       <NewsFlatList />
-
+      {/* TODO:: DELETE  */}
       <Text
         onPress={() => {
           signOut();
@@ -30,7 +30,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#05021B",
   },
   title: {
+    fontFamily: "Raleway",
+    fontWeight: 900,
     fontSize: 32,
+    lineHeight: 36,
     color: "#fff",
+    marginTop: 60,
+    paddingHorizontal: 16,
   },
 });

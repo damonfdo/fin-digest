@@ -13,5 +13,10 @@ export default function AppLayout() {
     return <Redirect href="/sign-in" />;
   }
 
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="notification" options={{ headerShown: false }} />
+    </Stack>
+  );
 }
