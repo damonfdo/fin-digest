@@ -1,7 +1,7 @@
 import { Alert, StyleSheet, View } from "react-native";
 import { useSession } from "../Context/AuthContext";
 import { router } from "expo-router";
-import { FAB, Input, Text } from "@rneui/themed";
+import { FAB, Icon, Input, Text } from "@rneui/themed";
 import { useState } from "react";
 
 export default function SignIn() {
@@ -45,7 +45,7 @@ export default function SignIn() {
         style={{ right: 0, position: "absolute", bottom: 15, margin: 10 }}
         buttonStyle={styles.fabBtn}
         disabledStyle={[styles.fabBtn, { opacity: 0.8 }]}
-        title={">"}
+        title={<Icon name="chevron-thin-right" type="entypo" color="#fff" />}
       />
     </View>
   );
