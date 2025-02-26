@@ -15,20 +15,25 @@ import { ExternalLink } from "./ExternalLink";
 const NewsFlatList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [news, setNews] = useState<News[]>([]);
+  const [errror, setError] = useState<string | null>(
+    "Something went wrong. Please try again later"
+  );
 
   const fetchNews = async () => {
-    console.log(process.env.EXPO_API_BASE);
     try {
+      setIsLoading(true);
+      setError(null);
       const res = await fetchNewsAPI();
       setNews(res);
     } catch (error) {
-      // TODO: Error handling
-      console.log("🚀 ~ fetchNews ~ error:", error);
+      setError("Something went wrong. Please try again later");
+    } finally {
+      setIsLoading(false);
     }
   };
   useEffect(() => {
     fetchNews();
-  }, [isLoading]);
+  }, []);
 
   const renderItem = ({ item }: { item: News }) => {
     const formattedDateTime = new Date(item.datetime);
@@ -62,19 +67,15 @@ const NewsFlatList = () => {
       renderItem={renderItem}
       contentContainerStyle={{ padding: 10, gap: 16 }}
       ListEmptyComponent={
-        <Button
-          onPress={() => {
-            setIsLoading(true);
-            setTimeout(() => setIsLoading(false), 300);
-          }}
-          loading={isLoading}
-        >
-          no Data
-        </Button>
+        errror ? (
+          <Text style={[styles.errorLabel]}>{errror}</Text>
+        ) : (
+          <Text style={styles.subText}>No Data available</Text>
+        )
       }
       onEndReached={fetchNews}
       onEndReachedThreshold={0.6}
-      refreshControl={<Text>Refreshing</Text>}
+      refreshControl={<Text style={styles.subText}>Refreshing</Text>}
       refreshing={isLoading}
     />
   );
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 24,
     letterSpacing: 0,
-    color: "#ffffff",
+    color: "#FFFFFF",
   },
   subText: {
     fontFamily: "Rubik",
@@ -117,4 +118,12 @@ const styles = StyleSheet.create({
   },
   itemWrapper: { flexDirection: "column", gap: 8, flex: 1 },
   subTextRow: { flexDirection: "row", justifyContent: "space-between" },
+  errorLabel: {
+    fontFamily: "Rubik",
+    fontWeight: 500,
+    fontSize: 16,
+    lineHeight: 24,
+    letterSpacing: 0,
+    color: "#FFFFFF",
+  },
 });
