@@ -7,7 +7,7 @@ import {
   VirtualizedList,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Button, Image, Input } from "@rneui/themed";
+import { Button, Image } from "@rneui/themed";
 import { News } from "../types/news";
 import { fetchNewsAPI } from "../services/newsApi";
 import { ExternalLink } from "./ExternalLink";
@@ -33,27 +33,17 @@ const NewsFlatList = () => {
   const renderItem = ({ item }: { item: News }) => {
     const formattedDateTime = new Date(item.datetime);
     return (
-      <View
-        key={item.id}
-        style={{
-          flexDirection: "row",
-          gap: 4,
-          paddingHorizontal: 16,
-          overflow: "hidden",
-        }}
-      >
-        <Image
-          source={{ uri: item.image }}
-          style={styles.image}
-          resizeMode="stretch"
-          PlaceholderContent={<ActivityIndicator />}
-        />
+      <ExternalLink href={item.url}>
+        <View key={item.id} style={styles.itemContainer}>
+          <Image
+            source={{ uri: item.image }}
+            style={styles.image}
+            resizeMode="stretch"
+            PlaceholderContent={<ActivityIndicator />}
+          />
 
-        <ExternalLink href={item.url}>
-          <View style={{ flexDirection: "column", gap: 8 }}>
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
+          <View style={styles.itemWrapper}>
+            <View style={styles.subTextRow}>
               <Text style={[styles.subText]}>{item.source}</Text>
               <Text style={[styles.subText]}>
                 {formattedDateTime.toDateString()}
@@ -61,16 +51,16 @@ const NewsFlatList = () => {
             </View>
             <Text style={[styles.label]}>{item.headline}</Text>
           </View>
-        </ExternalLink>
-      </View>
+        </View>
+      </ExternalLink>
     );
   };
   return (
     <FlatList
       data={news}
-      keyExtractor={(item, index) => index.toString()}
+      keyExtractor={(item) => `${item.id}`}
       renderItem={renderItem}
-      contentContainerStyle={{ gap: 16 }}
+      contentContainerStyle={{ padding: 10, gap: 16 }}
       ListEmptyComponent={
         <Button
           onPress={() => {
@@ -119,4 +109,12 @@ const styles = StyleSheet.create({
     height: 100,
     aspectRatio: 1,
   },
+  itemContainer: {
+    flexDirection: "row",
+    gap: 16,
+    paddingHorizontal: 16,
+    justifyContent: "space-between",
+  },
+  itemWrapper: { flexDirection: "column", gap: 8, flex: 1 },
+  subTextRow: { flexDirection: "row", justifyContent: "space-between" },
 });
