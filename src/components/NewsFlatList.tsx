@@ -66,6 +66,8 @@ const NewsFlatList = () => {
       ListEmptyComponent={
         errror ? (
           <Text style={[styles.errorLabel]}>{errror}</Text>
+        ) : isLoading ? (
+          <ActivityIndicator color="#ffffff" />
         ) : (
           <Text style={styles.subText}>No Data available</Text>
         )
