@@ -4,10 +4,9 @@ import {
   StyleSheet,
   Text,
   View,
-  VirtualizedList,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Button, Image } from "@rneui/themed";
+import { Image } from "@rneui/themed";
 import { News } from "../types/news";
 import { fetchNewsAPI } from "../services/newsApi";
 import { ExternalLink } from "./ExternalLink";
@@ -15,9 +14,7 @@ import { ExternalLink } from "./ExternalLink";
 const NewsFlatList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [news, setNews] = useState<News[]>([]);
-  const [errror, setError] = useState<string | null>(
-    "Something went wrong. Please try again later"
-  );
+  const [errror, setError] = useState<string | null>(null);
 
   const fetchNews = async () => {
     try {
